@@ -4,3 +4,39 @@ GET {{myApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{myApi_HostAddress}}/productos
+Accept: application/json
+
+###
+
+GET {{myApi_HostAddress}}/productos/1
+Accept: application/json
+
+###
+
+POST {{myApi_HostAddress}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "Azucar",
+  "unidadDeMedida": "kg",
+  "cantidad": 2
+}
+
+###
+
+PUT {{myApi_HostAddress}}/productos/1
+Content-Type: application/json
+
+{
+  "nombre": "Harina",
+  "unidadDeMedida": "kg",
+  "cantidad": 8
+}
+
+###
+
+DELETE {{myApi_HostAddress}}/productos/2
+
+###
