@@ -6,3 +6,6 @@ obj/
 appsettings.*.local.json
 *.pfx
 *.key
+*.db
+*.db-shm
+*.db-wal
