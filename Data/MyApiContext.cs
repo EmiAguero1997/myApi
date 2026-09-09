@@ -27,5 +27,7 @@ public class MyApiContext : DbContext
             entity.Property(almacen => almacen.Nombre).HasMaxLength(120).IsRequired();
             entity.Property(almacen => almacen.Direccion).HasMaxLength(200).IsRequired();
         });
+        modelBuilder.Entity<AlmacenProducto>()
+        .HasKey(ap => new { ap.AlmacenId, ap.ProductoId });
     }
 }

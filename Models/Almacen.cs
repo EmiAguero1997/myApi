@@ -7,4 +7,5 @@ public class Almacen
     public string Nombre { get; set; } = string.Empty;
 
     public string Direccion { get; set; } = string.Empty;
+    public ICollection<AlmacenProducto> AlmacenProductos { get; set; } = new List<AlmacenProducto>();
 }
