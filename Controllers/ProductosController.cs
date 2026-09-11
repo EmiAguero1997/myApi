@@ -54,7 +54,6 @@ public class ProductosController : ControllerBase
 
         existente.Nombre = producto.Nombre;
         existente.UnidadDeMedida = producto.UnidadDeMedida;
-        existente.Cantidad = producto.Cantidad;
         await _context.SaveChangesAsync();
         return NoContent();
     }

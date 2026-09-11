@@ -1,5 +1,0 @@
-public interface IInventarioService
-{
-    Task<IEnumerable<ProductoInventarioDto>> ObtenerProductosPorAlmacenAsync(int almacenId);
-    Task<bool> AsignarOActualizarStockAsync(int almacenId, AgregarStockDto dto);
-}

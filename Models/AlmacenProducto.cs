@@ -7,4 +7,5 @@ public class AlmacenProducto
     public int ProductoId { get; set; }
     public Producto Producto { get; set; } = null!;
     public string Fecha { get; set; } = string.Empty;
+    public decimal Cantidad { get; set; }
 }

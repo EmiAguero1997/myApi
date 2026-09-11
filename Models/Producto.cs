@@ -8,6 +8,6 @@ public class Producto
 
     public string UnidadDeMedida { get; set; } = string.Empty;
 
-    public decimal Cantidad { get; set; }
+    
     public ICollection<AlmacenProducto> AlmacenProductos { get; set; } = new List<AlmacenProducto>();
 }

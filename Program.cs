@@ -19,6 +19,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+builder.Services.AddScoped<IInventarioService, InventarioService>();
 
 var app = builder.Build();
 
