@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myApi.Data;
@@ -5,6 +6,7 @@ using myApi.Models;
 
 namespace myApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProductosController : ControllerBase

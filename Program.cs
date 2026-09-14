@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using myApi.Data;
+using myApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +23,46 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] 
+    ?? throw new InvalidOperationException("La clave secreta JWT no está configurada.");
+
+// 2. Configurar Autenticación registrando los esquemas por defecto 👈 ACÁ ESTÁ EL FIX
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"--> FALLÓ JWT: {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+
+        OnMessageReceived = context =>
+    {
+        var authHeader = context.Request.Headers["Authorization"].ToString();
+        Console.WriteLine($"--> HEADER RECIBIDO: '{authHeader}'");
+        return Task.CompletedTask;
+    },
+    };
+});
 builder.Services.AddScoped<IInventarioService, InventarioService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
@@ -38,9 +81,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors();
-
+app.UseAuthentication(); // 👈 Asegúrate de que la autenticación se aplique antes de la autorización
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -12,7 +12,7 @@ public class MyApiContext : DbContext
 
     public DbSet<Producto> Productos => Set<Producto>();
     public DbSet<Almacen> Almacen => Set<Almacen>();
-
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<AlmacenProducto> AlmacenProducto => Set<AlmacenProducto>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +37,15 @@ public class MyApiContext : DbContext
           entity.HasOne(ap => ap.Producto)
           .WithMany(p => p.AlmacenProductos)
           .HasForeignKey(ap => ap.ProductoId);
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(usuario => usuario.Id);
+            entity.Property(usuario => usuario.Nombre).HasMaxLength(120).IsRequired();
+            entity.Property(usuario => usuario.Correo).HasMaxLength(200).IsRequired();
+            entity.Property(usuario => usuario.Contrasena).HasMaxLength(200).IsRequired();
+            entity.Property(usuario => usuario.Rol).HasMaxLength(40).IsRequired();
         });
         
     }
